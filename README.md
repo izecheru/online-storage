@@ -155,7 +155,7 @@ volumes:
   dataprotection-keys:
 ```
 
-Run this command if you have docker deckstop installed and all the things will begin to download and set up
+Run this command if you have Docker Desktop installed and all the things will begin to download and set up
 
 ```bash
 docker compose up --build
