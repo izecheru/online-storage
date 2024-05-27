@@ -17,7 +17,7 @@ I used Next.js for this project because I am familiar with react and I consider 
 
 ## API
 
-For this project I chose ASP .NET, the api routes can be seen by either opening the project with `Visual Studio2022` (swagger will automatically be opened in a new window in the default browser once you run the project) or by going to [swagger editor]('https://editor.swagger.io/#/) and `File -> Import file -> ./backend/api.json`
+For this project I chose ASP .NET, the api routes can be seen by either opening the project with `Visual Studio2022` (swagger will automatically be opened in a new window in the default browser once you run the project) or by going to [swagger editor](https://editor.swagger.io/#/) and `File -> Import file -> ./backend/api.json`
 
 ## How the data looks like
 
