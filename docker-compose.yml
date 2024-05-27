@@ -18,7 +18,7 @@ services:
     entrypoint: ["/bin/bash", "/sqlentrypoint.sh"]
 
   backend:
-    image: izecheru/online-storage-backend
+    image: irzecheru/online-storage-backend
     container_name: backend
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=FileStorage;User Id=sa;Password=Parola1234;TrustServerCertificate=True;
@@ -32,7 +32,7 @@ services:
       - dataprotection-keys:/home/app/.aspnet/DataProtection-Keys
 
   frontend:
-    image: izecheru/online-storage-frontend
+    image: irzecheru/online-storage-frontend
     container_name: frontend
     networks:
       - shared-network
