@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "online-documents-storage-API", "online-documents-storage-API.csproj", "{5F379EF9-07AD-4EC4-9582-EA6245A65BCC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F379EF9-07AD-4EC4-9582-EA6245A65BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F379EF9-07AD-4EC4-9582-EA6245A65BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F379EF9-07AD-4EC4-9582-EA6245A65BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F379EF9-07AD-4EC4-9582-EA6245A65BCC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBD560D2-3169-4106-91C6-83BBEF41EA6A}
+	EndGlobalSection
+EndGlobal

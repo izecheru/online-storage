@@ -1,0 +1,121 @@
+@import "../src/app/variables";
+
+.folder-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  justify-content: flex-start;
+  width: 100%;
+
+  .unordered-list {
+    display: flex;
+    list-style-type: none;
+    flex-direction: row;
+    flex-flow: wrap;
+    gap: 10px;
+    .list-item {
+      margin-left: 40px;
+      align-items: center;
+      flex-direction: row;
+      justify-content: flex-start;
+      display: flex;
+      gap: 10px;
+      cursor: pointer;
+      padding: 14px;
+
+      .folder-name {
+        color: $text-color;
+        font-family: $font-family-segoe;
+        pointer-events: none;
+        font-size: 20px;
+        font-weight: 300;
+        pointer-events: none;
+        transition: max-height 0.3s ease;
+        width: 172px;
+      }
+
+      // for pictures, i tested it a bit but i dont like how it looks
+      .picture-details-container {
+        visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-size: 20px;
+        font-weight: 300;
+
+        .delimiter {
+          height: 100%;
+          border: 1px solid lightblue;
+          border-radius: 10px;
+        }
+
+        .file-name {
+          font-family: $font-family-segoe;
+          overflow: hidden;
+          white-space: nowrap; /* Prevent wrapping */
+          text-overflow: ellipsis; /* Truncate with ellipsis */
+          color: white;
+        }
+
+        .file-details {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          color: white;
+          font-weight: 200;
+        }
+      }
+
+      .file-details-container {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 10px;
+        font-size: 20px;
+        font-weight: 300;
+
+        .delimiter {
+          width: 4px;
+          height: 100%;
+          border: 2px solid white;
+          border-radius: 10px;
+        }
+
+        .file-name {
+          font-family: $font-family-segoe;
+          white-space: nowrap; /* Prevent wrapping */
+          color: white;
+          overflow: hidden;
+          width: 172px;
+        }
+
+        .file-details {
+          color: white;
+          font-weight: 200;
+        }
+      }
+
+      .icon {
+        display: inline-block;
+      }
+
+      &:hover {
+        animation: folder-animation forwards 0.2s ease-in-out;
+      }
+    }
+  }
+}
+
+@keyframes folder-animation {
+  from {
+    transform: translateY(0);
+    background-color: rgba(110, 149, 161, 0.053);
+    border-radius: 10px;
+  }
+  to {
+    transform: translateY(-3px);
+    background-color: rgba(110, 149, 161, 0.207);
+    border-radius: 10px;
+  }
+}

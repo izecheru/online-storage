@@ -1,0 +1,21 @@
+.settings-page {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 30px;
+
+  .file-input {
+    display: none;
+  }
+
+  .file-label {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: #2980b9;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+.image-on-list {
+  height: auto;
+  width: auto;
+  max-width: 400px;
+  border-radius: 20px;
+  transition: max-width 0.3s ease-in-out;
+}
+
+.no-preview {
+  color: red;
+}

@@ -1,0 +1,178 @@
+
+@import "variables";
+
+.next-to-sidenav{
+  position: absolute;
+  margin-left: 200px;
+}
+
+* {
+  box-sizing: border-box;
+  padding:0;
+  margin: 0;
+}
+
+.app-surface{
+  display: flex;
+  flex-direction: column;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+  background-color: $background-color;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,h2,h3,h4{
+  color: $text-color;
+}
+
+
+/* ANIMATIONS START */
+@keyframes button-pulse {
+  0%{transform: scale(1);}
+  50%{transform: scale(1.4);}
+  100%{transform: scale(1);}
+}
+
+@keyframes button-float {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.4);
+  }
+}
+
+@keyframes button-reverse-float {
+  0% {
+    transform: scale(1.4); 
+  }
+
+  100% {
+    transform: scale(1); 
+  }
+}
+
+@keyframes hide-placeholder {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes shrink {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+
+.add-reverse-shrink{
+  animation: shrink-reverse 0.6s forwards ease-in-out;
+}
+
+@keyframes shrink-reverse {
+  0% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes input-animation {
+  0% {
+    outline: rgba(86, 84, 84, 0.228) 1px solid;
+    background: linear-gradient(to right, rgba(75, 137, 214, 0), rgba(164, 9, 9, 0));
+  }
+  100% {
+    outline: rgba(7, 111, 215, 0.228) 2px solid;
+    background: linear-gradient(to right, rgba(75, 137, 214, 0.8), rgba(0, 0, 0, 0.1));
+  }
+}
+
+@keyframes loading-animation{
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes label-animation {
+  from{
+    font-size:20px;
+    top: 50%;
+    background-color: transparent;
+  }
+  to{
+    top:0;
+    font-size: 14px;
+    background-color: rgb(0, 0, 0);
+  }
+}
+
+.add-reverse-label-animation{
+animation: 0.3s ease-in-out forwards label-reverse-animation;
+}
+
+@keyframes label-reverse-animation {
+  to{
+    font-size:20px;
+    top: 50%;
+    background-color: transparent;
+  }
+  from{
+    top:0;
+    font-size: 14px;
+    background-color: rgb(0, 0, 0);
+  }
+}
+
+@keyframes button-float {
+  from{
+    transform:translateY(0px);
+  }
+  to{
+    transform:translateY(-5px);
+  }
+}
+
+/* ANIMATIONS END */
+
+.page-setup{
+  margin-left: 200px;
+  padding: 20px;
+  margin-top: 60px;
+}
+
+
+.global-button{
+  background-color: #161618;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+  background-color: #3498db;
+    transform: translateY(-5px);
+    color: lightgray;
+  }
+}

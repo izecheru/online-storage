@@ -1,0 +1,26 @@
+@import "../src/app/variables";
+
+.fetching-data {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  position: absolute;
+  left: 40%;
+  top: 50%;
+  h1 {
+    color: white;
+    font-size: 40px;
+  }
+  .loading-icon {
+    animation: spin-icon infinite reverse 0.8s linear;
+  }
+}
+
+@keyframes spin-icon {
+  from {
+    transform: rotate(180deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

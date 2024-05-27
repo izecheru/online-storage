@@ -1,0 +1,230 @@
+@import "../src/app/variables";
+
+@keyframes spin-icon {
+  from {
+    transform: rotate(180deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.file-upload {
+  width: 50%;
+  z-index: 1;
+  overflow-x: hidden;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 30%;
+  margin-top: 100px;
+  gap: 30px;
+  flex-direction: column;
+  .upload-status {
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    .uploading-isLoading {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      gap: 30px;
+      p {
+        font-size: 20px;
+        color: white;
+      }
+      .loading-icon {
+        animation: spin-icon infinite reverse 0.8s linear;
+      }
+    }
+  }
+
+  .erase-files {
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+    outline: none;
+    border: 1px solid white;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-radius: 10px;
+    padding: 20px;
+    &:hover {
+      background-color: $folder-color;
+      color: black;
+    }
+  }
+  .start-upload {
+    margin: 20px;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+    outline: none;
+    border: 1px solid white;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-radius: 10px;
+    padding: 20px;
+    &:hover {
+      background-color: $folder-color;
+      color: black;
+    }
+  }
+
+  .file-upload-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    justify-content: flex-start;
+    width: 100%;
+
+    .files-wrapper {
+      justify-content: flex-start;
+      display: flex;
+      padding: 0;
+      margin: 0;
+
+      .unordered-list {
+        display: flex;
+        list-style-type: none;
+        flex-direction: column;
+        width: 100%;
+        padding: 10px;
+        transition: visibility 1s ease-in-out;
+
+        .uploaded {
+          visibility: hidden;
+        }
+
+        .pending-upload {
+          background-color: lightsalmon;
+          display: flex;
+        }
+
+        .list-item {
+          border-radius: 20px;
+          width: 100%;
+          align-items: center;
+          flex-direction: row;
+          justify-content: flex-start;
+          display: flex;
+          gap: 10px;
+          cursor: pointer;
+          padding: 14px;
+          max-height: 100px;
+          transition: background-color 0.2s ease-in-out;
+
+          .file-details-container {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-evenly;
+            gap: 20px;
+            font-size: 20px;
+            font-weight: 300;
+
+            .delimiter {
+              width: 4px;
+              height: 100%;
+              border: 2px solid black;
+              border-radius: 10px;
+            }
+
+            .file-name {
+              font-family: $font-family-segoe;
+              overflow: hidden;
+              white-space: nowrap; /* Prevent wrapping */
+              text-overflow: ellipsis; /* Truncate with ellipsis */
+              color: black;
+              width: 500px;
+            }
+
+            .file-details {
+              color: black;
+              font-weight: 200;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes file-hover-animation {
+  from {
+    transform: translateY(0);
+    background-color: rgba(98, 99, 99, 0.053);
+    border-radius: 10px;
+  }
+  to {
+    transform: translateY(-3px);
+    background-color: rgba(148, 149, 149, 0.207);
+    border-radius: 10px;
+  }
+}
+
+.file-drop-zone {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  transition: border-color 0.3s;
+  cursor: pointer;
+
+  p {
+    color: $text-color;
+    font-size: 40px;
+  }
+}
+
+.file-drop-zone.dragging {
+  border-color: #007bff;
+}
+
+.form-upload {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  button {
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+    outline: none;
+    border: 1px solid white;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-radius: 10px;
+    padding: 20px;
+    &:hover {
+      background-color: $folder-color;
+      color: black;
+    }
+  }
+  input {
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+    outline: none;
+    border: 1px solid white;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-radius: 10px;
+    padding: 20px;
+    &:hover {
+      background-color: $folder-color;
+      color: black;
+    }
+  }
+}
+
+.map-container {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  p {
+    font-size: 100px;
+    color: white;
+  }
+}

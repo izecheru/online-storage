@@ -1,0 +1,51 @@
+@import "../src/app/variables";
+
+.create-folder-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: absolute;
+  top: 30%;
+  left: 43%;
+  .create-folder-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .create-folder-button {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      outline: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      &:hover {
+        background-color: #2980b9;
+      }
+    }
+
+    input {
+      width: 345px;
+      padding: 15px;
+      color: white;
+      outline: none;
+      display: flex;
+      background-color: transparent;
+      justify-content: center;
+      border: none;
+      font-size: 30px;
+      border-radius: 20px;
+      margin: 0;
+      background-color: black;
+      transition: all 0.2s ease-in-out;
+
+      &:focus {
+        outline: 2px solid $folder-color;
+      }
+    }
+  }
+}
