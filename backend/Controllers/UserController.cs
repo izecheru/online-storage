@@ -74,7 +74,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("username")]
+        [HttpPost("username")]
         public async Task<IActionResult> GetUserByUsername([FromBody] string username)
         {
             try
