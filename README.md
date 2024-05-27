@@ -4,6 +4,13 @@ This is an application that mimics the Google Drive functionality.
 
 Currently it is under **development**.
 
+Admin account
+
+```
+username: admin
+password: Parola1234
+```
+
 ## Frontend
 
 I used Next.js for this project because I am familiar with react and I consider Next.Js the best framework for developing React based web applications
