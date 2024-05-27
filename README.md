@@ -8,7 +8,7 @@ Admin account
 
 ```
 username: admin
-password: Parola1234
+password: Parola1234!
 ```
 
 ## Frontend
