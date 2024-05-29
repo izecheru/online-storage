@@ -3,7 +3,8 @@
 # Start SQL Server
 /opt/mssql/bin/sqlservr &
 
-# Wait for SQL Server to start
+echo "Sleeping for 20s" &
+sleep 30
 
 # Run the initialization script
 echo "Running the initialization script..."

@@ -1,49 +1,45 @@
 version: "3.7"
 
 services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    depends_on:
+      - sqlserver
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
     environment:
       - SA_PASSWORD=Parola1234
       - ACCEPT_EULA=Y
-    networks:
-      - shared-network
     ports:
       - "1433:1433"
     volumes:
-      - sqlserverdata:/var/opt/mssql
       - ./init-db.sql:/init-db.sql
       - ./sqlentrypoint.sh:/sqlentrypoint.sh
+    restart: unless-stopped
     entrypoint: ["/bin/bash", "/sqlentrypoint.sh"]
 
   backend:
-    image: irzecheru/online-storage-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: backend
+    depends_on:
+      - sqlserver
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=FileStorage;User Id=sa;Password=Parola1234;TrustServerCertificate=True;
     ports:
-      - "8080:8080"
-    networks:
-      - shared-network
-    depends_on:
-      - sqlserver
+      - "127.0.0.1:8080:8080"
     volumes:
       - dataprotection-keys:/home/app/.aspnet/DataProtection-Keys
-
-  frontend:
-    image: irzecheru/online-storage-frontend
-    container_name: frontend
-    networks:
-      - shared-network
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-
-networks:
-  shared-network:
+    restart: unless-stopped
 
 volumes:
-  sqlserverdata:
   dataprotection-keys:

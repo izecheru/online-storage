@@ -27,7 +27,7 @@ RUN dotnet publish "./online-documents-storage-API.csproj" -c $BUILD_CONFIGURATI
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-# CMD [ "dotnet", "online-documents-storage-API.dll"]
-COPY ./entrypoint.sh ./
-CMD ["chmod", "+x", "./entrypoint.sh"]
-ENTRYPOINT ["./entrypoint.sh"]
+CMD [ "dotnet", "online-documents-storage-API.dll"]
+# COPY ./entrypoint.sh ./
+# CMD ["chmod", "+x", "./entrypoint.sh"]
+# ENTRYPOINT ["./entrypoint.sh"]

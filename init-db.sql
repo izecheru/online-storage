@@ -1,189 +1,149 @@
-IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'FileStorage')
-BEGIN
-    CREATE DATABASE FileStorage;
-    
-END
+CREATE DATABASE FileStorage;
+GO
 
+USE FileStorage;
+GO
 
 IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (
-        [MigrationId] nvarchar(150) NOT NULL,
-        [ProductVersion] nvarchar(32) NOT NULL,
+        [MigrationId] NVARCHAR(150) NOT NULL,
+        [ProductVersion] NVARCHAR(32) NOT NULL,
         CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])     
     );
+
+    CREATE TABLE [AspNetRoles] (
+        [Id] NVARCHAR(450) NOT NULL,
+        [Name] NVARCHAR(256) NULL,
+        [NormalizedName] NVARCHAR(256) NULL,
+        [ConcurrencyStamp] NVARCHAR(MAX) NULL,
+        CONSTRAINT [PK_AspNetRoles] PRIMARY KEY ([Id])
+    );
+
+    CREATE TABLE [AspNetUsers] (
+        [Id] NVARCHAR(450) NOT NULL,
+        [UserName] NVARCHAR(256) NULL,
+        [NormalizedUserName] NVARCHAR(256) NULL,
+        [Email] NVARCHAR(256) NULL,
+        [NormalizedEmail] NVARCHAR(256) NULL,
+        [EmailConfirmed] BIT NOT NULL,
+        [PasswordHash] NVARCHAR(MAX) NULL,
+        [SecurityStamp] NVARCHAR(MAX) NULL,
+        [ConcurrencyStamp] NVARCHAR(MAX) NULL,
+        [PhoneNumber] NVARCHAR(MAX) NULL,
+        [PhoneNumberConfirmed] BIT NOT NULL,
+        [TwoFactorEnabled] BIT NOT NULL,
+        [LockoutEnd] DATETIMEOFFSET NULL,
+        [LockoutEnabled] BIT NOT NULL,
+        [AccessFailedCount] INT NOT NULL,
+        CONSTRAINT [PK_AspNetUsers] PRIMARY KEY ([Id])
+    );
+
+    CREATE TABLE [AspNetRoleClaims] (
+        [Id] INT NOT NULL IDENTITY,
+        [RoleId] NVARCHAR(450) NOT NULL,
+        [ClaimType] NVARCHAR(MAX) NULL,
+        [ClaimValue] NVARCHAR(MAX) NULL,
+        CONSTRAINT [PK_AspNetRoleClaims] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [AspNetRoles] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE TABLE [AspNetUserClaims] (
+        [Id] INT NOT NULL IDENTITY,
+        [UserId] NVARCHAR(450) NOT NULL,
+        [ClaimType] NVARCHAR(MAX) NULL,
+        [ClaimValue] NVARCHAR(MAX) NULL,
+        CONSTRAINT [PK_AspNetUserClaims] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE TABLE [AspNetUserLogins] (
+        [LoginProvider] NVARCHAR(450) NOT NULL,
+        [ProviderKey] NVARCHAR(450) NOT NULL,
+        [ProviderDisplayName] NVARCHAR(MAX) NULL,
+        [UserId] NVARCHAR(450) NOT NULL,
+        CONSTRAINT [PK_AspNetUserLogins] PRIMARY KEY ([LoginProvider], [ProviderKey]),
+        CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE TABLE [AspNetUserRoles] (
+        [UserId] NVARCHAR(450) NOT NULL,
+        [RoleId] NVARCHAR(450) NOT NULL,
+        CONSTRAINT [PK_AspNetUserRoles] PRIMARY KEY ([UserId], [RoleId]),
+        CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [AspNetRoles] ([Id]) ON DELETE CASCADE,
+        CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE TABLE [AspNetUserTokens] (
+        [UserId] NVARCHAR(450) NOT NULL,
+        [LoginProvider] NVARCHAR(450) NOT NULL,
+        [Name] NVARCHAR(450) NOT NULL,
+        [Value] NVARCHAR(MAX) NULL,
+        CONSTRAINT [PK_AspNetUserTokens] PRIMARY KEY ([UserId], [LoginProvider], [Name]),
+        CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE TABLE [Directories] (
+        [Id] NVARCHAR(450) NOT NULL,
+        [ParentId] NVARCHAR(MAX) NULL,
+        [CanMove] BIT NOT NULL,
+        [CanDelete] BIT NOT NULL,
+        [Size] BIGINT NULL,
+        [DateModified] DATETIME2 NULL,
+        [SharedWithOwnerIds] NVARCHAR(MAX) NULL,
+        [Name] NVARCHAR(MAX) NOT NULL,
+        [DateCreated] DATETIME2 NOT NULL,
+        [UserId] NVARCHAR(450) NOT NULL,
+        CONSTRAINT [PK_Directories] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_Directories_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE TABLE [ProfileImages] (
+        [Id] NVARCHAR(450) NOT NULL,
+        [ImageMnemonic] NVARCHAR(MAX) NOT NULL,
+        [Data] VARBINARY(MAX) NOT NULL,
+        [UserId] NVARCHAR(450) NOT NULL,
+        CONSTRAINT [PK_ProfileImages] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_ProfileImages_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE TABLE [Files] (
+        [Id] NVARCHAR(450) NOT NULL,
+        [CanMove] BIT NULL,
+        [CanDelete] BIT NULL,
+        [FileSize] BIGINT NOT NULL,
+        [DateModified] DATETIME2 NULL,
+        [SharedWithOwnerIds] NVARCHAR(MAX) NULL,
+        [Name] NVARCHAR(MAX) NOT NULL,
+        [DateCreated] DATETIME2 NOT NULL,
+        [FileType] INT NOT NULL,
+        [DirectoryId] NVARCHAR(450) NOT NULL,
+        CONSTRAINT [PK_Files] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_Files_Directories_DirectoryId] FOREIGN KEY ([DirectoryId]) REFERENCES [Directories] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE TABLE [FilesData] (
+        [Id] NVARCHAR(450) NOT NULL,
+        [FileId] NVARCHAR(450) NOT NULL,
+        [Data] VARBINARY(MAX) NOT NULL,
+        [FileMnemonic] NVARCHAR(MAX) NOT NULL,
+        CONSTRAINT [PK_FilesData] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_FilesData_Files_FileId] FOREIGN KEY ([FileId]) REFERENCES [Files] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE INDEX [IX_AspNetRoleClaims_RoleId] ON [AspNetRoleClaims] ([RoleId]);   
+    CREATE UNIQUE INDEX [RoleNameIndex] ON [AspNetRoles] ([NormalizedName]) WHERE [NormalizedName] IS NOT NULL;
+    CREATE INDEX [IX_AspNetUserClaims_UserId] ON [AspNetUserClaims] ([UserId]);   
+    CREATE INDEX [IX_AspNetUserLogins_UserId] ON [AspNetUserLogins] ([UserId]);   
+    CREATE INDEX [IX_AspNetUserRoles_RoleId] ON [AspNetUserRoles] ([RoleId]);     
+    CREATE INDEX [EmailIndex] ON [AspNetUsers] ([NormalizedEmail]);
+    CREATE UNIQUE INDEX [UserNameIndex] ON [AspNetUsers] ([NormalizedUserName]) WHERE [NormalizedUserName] IS NOT NULL;
+    CREATE INDEX [IX_Directories_UserId] ON [Directories] ([UserId]);
+    CREATE INDEX [IX_Files_DirectoryId] ON [Files] ([DirectoryId]);
+    CREATE INDEX [IX_FilesData_FileId] ON [FilesData] ([FileId]);
+    CREATE INDEX [IX_ProfileImages_UserId] ON [ProfileImages] ([UserId]);
+
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20240526123627_initialMigration', N'8.0.5');
 END;
-GO
-
-BEGIN TRANSACTION;
-GO
-
-CREATE TABLE [AspNetRoles] (
-    [Id] nvarchar(450) NOT NULL,
-    [Name] nvarchar(256) NULL,
-    [NormalizedName] nvarchar(256) NULL,
-    [ConcurrencyStamp] nvarchar(max) NULL,
-    CONSTRAINT [PK_AspNetRoles] PRIMARY KEY ([Id])
-);
-GO
-
-CREATE TABLE [AspNetUsers] (
-    [Id] nvarchar(450) NOT NULL,
-    [UserName] nvarchar(256) NULL,
-    [NormalizedUserName] nvarchar(256) NULL,
-    [Email] nvarchar(256) NULL,
-    [NormalizedEmail] nvarchar(256) NULL,
-    [EmailConfirmed] bit NOT NULL,
-    [PasswordHash] nvarchar(max) NULL,
-    [SecurityStamp] nvarchar(max) NULL,
-    [ConcurrencyStamp] nvarchar(max) NULL,
-    [PhoneNumber] nvarchar(max) NULL,
-    [PhoneNumberConfirmed] bit NOT NULL,
-    [TwoFactorEnabled] bit NOT NULL,
-    [LockoutEnd] datetimeoffset NULL,
-    [LockoutEnabled] bit NOT NULL,
-    [AccessFailedCount] int NOT NULL,
-    CONSTRAINT [PK_AspNetUsers] PRIMARY KEY ([Id])
-);
-GO
-
-CREATE TABLE [AspNetRoleClaims] (
-    [Id] int NOT NULL IDENTITY,
-    [RoleId] nvarchar(450) NOT NULL,
-    [ClaimType] nvarchar(max) NULL,
-    [ClaimValue] nvarchar(max) NULL,
-    CONSTRAINT [PK_AspNetRoleClaims] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [AspNetRoles] ([Id]) ON DELETE CASCADE
-);
-GO
-
-CREATE TABLE [AspNetUserClaims] (
-    [Id] int NOT NULL IDENTITY,
-    [UserId] nvarchar(450) NOT NULL,
-    [ClaimType] nvarchar(max) NULL,
-    [ClaimValue] nvarchar(max) NULL,
-    CONSTRAINT [PK_AspNetUserClaims] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
-);
-GO
-
-CREATE TABLE [AspNetUserLogins] (
-    [LoginProvider] nvarchar(450) NOT NULL,
-    [ProviderKey] nvarchar(450) NOT NULL,
-    [ProviderDisplayName] nvarchar(max) NULL,
-    [UserId] nvarchar(450) NOT NULL,
-    CONSTRAINT [PK_AspNetUserLogins] PRIMARY KEY ([LoginProvider], [ProviderKey]),
-    CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
-);
-GO
-
-CREATE TABLE [AspNetUserRoles] (
-    [UserId] nvarchar(450) NOT NULL,
-    [RoleId] nvarchar(450) NOT NULL,
-    CONSTRAINT [PK_AspNetUserRoles] PRIMARY KEY ([UserId], [RoleId]),
-    CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [AspNetRoles] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
-);
-GO
-
-CREATE TABLE [AspNetUserTokens] (
-    [UserId] nvarchar(450) NOT NULL,
-    [LoginProvider] nvarchar(450) NOT NULL,
-    [Name] nvarchar(450) NOT NULL,
-    [Value] nvarchar(max) NULL,
-    CONSTRAINT [PK_AspNetUserTokens] PRIMARY KEY ([UserId], [LoginProvider], [Name]),
-    CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
-);
-GO
-
-CREATE TABLE [Directories] (
-    [Id] nvarchar(450) NOT NULL,
-    [ParentId] nvarchar(max) NULL,
-    [CanMove] bit NOT NULL,
-    [CanDelete] bit NOT NULL,
-    [Size] bigint NULL,
-    [DateModified] datetime2 NULL,
-    [SharedWithOwnerIds] nvarchar(max) NULL,
-    [Name] nvarchar(max) NOT NULL,
-    [DateCreated] datetime2 NOT NULL,
-    [UserId] nvarchar(450) NOT NULL,
-    CONSTRAINT [PK_Directories] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_Directories_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
-);
-GO
-
-CREATE TABLE [ProfileImages] (
-    [Id] nvarchar(450) NOT NULL,
-    [ImageMnemonic] nvarchar(max) NOT NULL,
-    [Data] varbinary(max) NOT NULL,
-    [UserId] nvarchar(450) NOT NULL,
-    CONSTRAINT [PK_ProfileImages] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_ProfileImages_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
-);
-GO
-
-CREATE TABLE [Files] (
-    [Id] nvarchar(450) NOT NULL,
-    [CanMove] bit NULL,
-    [CanDelete] bit NULL,
-    [FileSize] bigint NOT NULL,
-    [DateModified] datetime2 NULL,
-    [SharedWithOwnerIds] nvarchar(max) NULL,
-    [Name] nvarchar(max) NOT NULL,
-    [DateCreated] datetime2 NOT NULL,
-    [FileType] int NOT NULL,
-    [DirectoryId] nvarchar(450) NOT NULL,
-    CONSTRAINT [PK_Files] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_Files_Directories_DirectoryId] FOREIGN KEY ([DirectoryId]) REFERENCES [Directories] ([Id]) ON DELETE CASCADE
-);
-GO
-
-CREATE TABLE [FilesData] (
-    [Id] nvarchar(450) NOT NULL,
-    [FileId] nvarchar(450) NOT NULL,
-    [Data] varbinary(max) NOT NULL,
-    [FileMnemonic] nvarchar(max) NOT NULL,
-    CONSTRAINT [PK_FilesData] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_FilesData_Files_FileId] FOREIGN KEY ([FileId]) REFERENCES [Files] ([Id]) ON DELETE CASCADE
-);
-GO
-
-CREATE INDEX [IX_AspNetRoleClaims_RoleId] ON [AspNetRoleClaims] ([RoleId]);   
-GO
-
-CREATE UNIQUE INDEX [RoleNameIndex] ON [AspNetRoles] ([NormalizedName]) WHERE [NormalizedName] IS NOT NULL;
-GO
-
-CREATE INDEX [IX_AspNetUserClaims_UserId] ON [AspNetUserClaims] ([UserId]);   
-GO
-
-CREATE INDEX [IX_AspNetUserLogins_UserId] ON [AspNetUserLogins] ([UserId]);   
-GO
-
-CREATE INDEX [IX_AspNetUserRoles_RoleId] ON [AspNetUserRoles] ([RoleId]);     
-GO
-
-CREATE INDEX [EmailIndex] ON [AspNetUsers] ([NormalizedEmail]);
-GO
-
-CREATE UNIQUE INDEX [UserNameIndex] ON [AspNetUsers] ([NormalizedUserName]) WHERE [NormalizedUserName] IS NOT NULL;
-GO
-
-CREATE INDEX [IX_Directories_UserId] ON [Directories] ([UserId]);
-GO
-
-CREATE INDEX [IX_Files_DirectoryId] ON [Files] ([DirectoryId]);
-GO
-
-CREATE INDEX [IX_FilesData_FileId] ON [FilesData] ([FileId]);
-GO
-
-CREATE INDEX [IX_ProfileImages_UserId] ON [ProfileImages] ([UserId]);
-GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240526123627_initialMigration', N'8.0.5');
-GO
-
-COMMIT;
 GO
