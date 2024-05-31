@@ -182,7 +182,7 @@ volumes:
 Run this command if you have Docker Desktop installed and all the things will begin to download and set up
 
 ```bash
-docker-compose -f docker-compose.yml -p online-storage up -d
+docker-compose -f docker-compose.yml -p online-storage up -d --build
 ```
 
 After that you can just go to [this link](http://localhost:3000) and the login page will be accessible to you

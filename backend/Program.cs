@@ -105,12 +105,6 @@ namespace API
                 };
             });
 
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("User", policy => policy.RequireRole("User")
-            //    .RequireAuthenticatedUser().AddAuthenticationSchemes("AuthScheme").Build());
-            //});
-
             services.AddScoped<IAuthManager, AuthManager>();
             services.AddScoped<IAuthTokenManager, AuthTokenManager>();
             services.AddScoped<IDirectoryManager, DirectoryManager>();
@@ -121,7 +115,6 @@ namespace API
             services.AddScoped<IFileDataRepository, FileDataRepository>();
             services.AddScoped<IUserProfileImageManager, UserProfileImageManager>();
             services.AddScoped<IUserProfileImageRepository, UserProfileImageRepository>();
-
 
             services.AddAuthorization(options =>
             {
@@ -135,7 +128,8 @@ namespace API
                 .RequireAuthenticatedUser().AddAuthenticationSchemes("AuthScheme").Build());
             });
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, RoleManager<IdentityRole<string>> roleManager, UserManager<User> userManager)
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, RoleManager<IdentityRole<string>> roleManager, UserManager<User> userManager, AppDbContext appDbContext)
         {
             if (env.IsDevelopment())
             {
@@ -144,18 +138,19 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
-            //app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseCors("_allowSpecificOrigins");
 
             app.UseAuthorization();
 
-            _ = app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            // Ensure the database is created.
+            appDbContext.Database.EnsureCreated();
 
             CreateRoles(roleManager).GetAwaiter().GetResult();
             CreateAdmins(userManager, configuration).GetAwaiter().GetResult();
